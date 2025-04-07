@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->foreignId('author')->constrained('users')->onDelete('cascade'); // users 'id' FK
+            $table->string('excerpt')->nullable();
+            $table->string('author');
+            //$table->foreignId('author')->constrained('users')->onDelete('cascade'); // users 'id' F
+            $table->string('category'); // category name
             //$table->foreignId('category')->constrained('blog_categories')->onDelete('cascade'); // blog_categories 'id' FK
 
             $table->string('tags')->nullable();

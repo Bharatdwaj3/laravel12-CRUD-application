@@ -33,6 +33,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Store the authenticated user's name in the session
+        $request->session()->put('user', Auth::user()->name);
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

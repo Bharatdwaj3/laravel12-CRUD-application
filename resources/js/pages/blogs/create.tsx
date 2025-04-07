@@ -5,12 +5,13 @@ import AppLayout from '@/layouts/app-layout';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Create = () => {
     const [previewImage, setPreviewImage] = useState('');
 
     // Using Inertia's useForm hook for proper form handling
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         title: '',
         excerpt: '',
         content: '',
@@ -44,7 +45,17 @@ const Create = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Using Inertia's post method for form submission
-        post(route('blogs.store'));
+        post(route('blogs.store'), {
+            onSuccess: () => {
+                toast.success('Blog post created successfully!');
+                //clear the input fields after successful submission
+                reset();
+                setPreviewImage('');
+            },
+            onError: () => {
+                toast.error('Failed to create blog post. Please try again.');
+            },
+        });
     };
 
     return (
@@ -80,7 +91,7 @@ const Create = () => {
                             placeholder="Short content that need to display in the home page"
                         />
 
-                        <Label htmlFor="excerpt">Content</Label>
+                        <Label htmlFor="content">Content</Label>
                         <Textarea
                             className="h-32 w-full"
                             id="content"
@@ -94,25 +105,31 @@ const Create = () => {
                             placeholder="Content of the blog"
                         />
 
-                        <Label htmlFor="excerpt">Category</Label>
-                        <select
-                            id="category"
-                            name="category"
-                            value={data.category}
-                            onChange={handleInputChange}
-                            className="focus:ring-opacity-30 w-full rounded-lg border px-4 py-3 focus:ring-2"
-                            required
-                        >
-                            <option value="" disabled>
-                                Select a category
-                            </option>
-                            {categories.map((category) => (
-                                <option key={category} value={category}>
-                                    {category}
+                        <div>
+                            <label
+                                htmlFor="category"
+                                className="text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
+                            >
+                                Category
+                            </label>
+                            <select
+                                id="category"
+                                name="category"
+                                value={data.category}
+                                onChange={handleInputChange}
+                                className="focus:ring-opacity-30 w-full rounded-lg border px-4 py-3 focus:ring-2"
+                                required
+                            >
+                                <option value="" disabled>
+                                    Select a category
                                 </option>
-                            ))}
-                        </select>
-
+                                {categories.map((category) => (
+                                    <option key={category} value={category}>
+                                        {category}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                         <Label htmlFor="excerpt">Image</Label>
                         <div className="flex w-full items-center justify-center">
                             <label
