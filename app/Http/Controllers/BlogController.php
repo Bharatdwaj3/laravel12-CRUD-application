@@ -134,6 +134,6 @@ class BlogController extends Controller
 
         $blog->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('dashboard.index')->with('success', 'Blog deleted successfully');
     }
 }

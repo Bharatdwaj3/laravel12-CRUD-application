@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
-
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
@@ -25,5 +25,11 @@ class Blog extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'author', 'name');
+    }
+    public function getTableData()
+    {
+        //get all the data from the blogs table
+        $blogs = Blog::all();
+        return $blogs;
     }
 }

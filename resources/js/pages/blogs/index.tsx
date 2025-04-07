@@ -30,7 +30,7 @@ export default function Blogs({ blogPosts }: { blogPosts: BlogPost[] }) {
                         Create New
                     </Link>
                 </div>
-                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                <div className="m-4 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                     {blogPosts.map((post, index) => (
                         <Link href="/blogs/{index}" key={index}>
                             <Card className="transition-all duration-300 hover:translate-y-1 hover:shadow-2xl">
