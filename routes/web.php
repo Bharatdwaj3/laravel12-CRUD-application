@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);
 });
 
-Route::get('/dashboard', function () {
+Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     return app(DashboardController::class)->index();
 })->name('dashboard');
 
