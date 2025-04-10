@@ -1,3 +1,4 @@
+import Tiptap from '@/components/tiptap';
 import { Button } from '@/components/ui/button';
 import { Input, Textarea } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -92,18 +93,8 @@ const Create = () => {
                         />
 
                         <Label htmlFor="content">Content</Label>
-                        <Textarea
-                            className="h-32 w-full"
-                            id="content"
-                            name="content"
-                            value={data.content}
-                            required
-                            autoFocus
-                            tabIndex={3}
-                            onChange={handleInputChange}
-                            disabled={processing}
-                            placeholder="Content of the blog"
-                        />
+
+                        <Tiptap content={data.content} onChange={(html: string) => setData('content', html)} />
 
                         <div>
                             <label

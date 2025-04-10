@@ -23,6 +23,10 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     return app(DashboardController::class)->index();
 })->name('dashboard');
 
+Route::get('/test', function () {
+    return Inertia::render('test');
+})->name('test');
+
 
 
 require __DIR__ . '/settings.php';
