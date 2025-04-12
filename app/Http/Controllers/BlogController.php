@@ -46,6 +46,8 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
+
         $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string|max:255',
@@ -92,32 +94,28 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $blog = Blog::findOrFail($id);
+        $blog = Blog::find($id);
+        if ($blog) {
+            $data = $request->except('image');
 
-        $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'excerpt' => 'sometimes|string|max:255',
-            'content' => 'sometimes|string',
-            'category' => 'sometimes|string|max:255',
-            'image' => 'sometimes|image|max:2048',
-        ]);
-
-        $data = $request->except('image');
-
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($blog->image) {
-                Storage::disk('public')->delete($blog->image);
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($blog->image) {
+                    Storage::disk('public')->delete($blog->image);
+                }
+                $data['image'] = $request->file('image')->store('blog-images', 'public');
             }
-            $data['image'] = $request->file('image')->store('blog-images', 'public');
+            $blog->update($data);
+
+            return redirect()->route('blogs.index')->with([
+                'success' => 'Blog updated successfully',
+                'blog' => [
+                    ...$blog->toArray(),
+                    'image_url' => $blog->image ? Storage::url($blog->image) : null,
+                ]
+            ]);
         }
-
-        $blog->update($data);
-
-        return response()->json([
-            ...$blog->toArray(),
-            'image_url' => $blog->image ? Storage::url($blog->image) : null,
-        ], 200);
+        return response()->json(['error' => 'Blog not found'], 404);
     }
 
     /**

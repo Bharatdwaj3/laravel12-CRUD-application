@@ -34,11 +34,17 @@ export default function Dashboard({ data }: { data: Record<string, Data> | Data[
             },
         });
     };
+
+    const handleUpdate = (id: string) => {
+        // Handle update action here
+        console.log('Update item with ID:', id);
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="my-2 flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <Table items={items} onEdit={(id) => console.log('Edit item', id)} onDelete={handleDelete} />
+                <Table items={items} onEdit={handleUpdate} onDelete={handleDelete} />
             </div>
         </AppLayout>
     );

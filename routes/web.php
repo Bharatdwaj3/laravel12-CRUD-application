@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
+use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -22,6 +23,16 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     return app(DashboardController::class)->index();
 })->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->get('blogs/update/{id}', function ($id) {
+    $blogs = new Blog();
+    $blog = $blogs->find($id)->first();
+    //dd($blog);
+    return Inertia::render('blogs/update', [
+        'blog' => $blog,
+        'id' => $id,
+    ]);
+})->name('update');
 
 Route::get('/test', function () {
     return Inertia::render('test');
