@@ -1,11 +1,12 @@
+import ShareButton from '@/components/share-button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { useFormattedDate } from '@/hooks/use-formated-date';
+import { ReadingTimeDisplay } from '@/hooks/use-readtime';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Clock, Share2 } from 'lucide-react';
 import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -22,7 +23,7 @@ type BlogPost = {
     content: string;
     author: string;
     image_url: string;
-    published_at?: string;
+    updated_at: string;
 };
 
 function TiptapRenderer({ content }: { content: string }) {
@@ -40,30 +41,9 @@ function TiptapRenderer({ content }: { content: string }) {
     return <EditorContent editor={editor} className="tiptap-display prose prose-lg max-w-none" />;
 }
 
-function ReadingTime({ content }: { content: string }) {
-    // Average reading speed: 200 words per minute
-    const wordCount = content.split(/\s+/).length;
-    const minutes = Math.ceil(wordCount / 200);
-    return (
-        <div className="flex items-center text-sm text-gray-500">
-            <Clock className="mr-1 h-4 w-4" />
-            <span>{minutes} min read</span>
-        </div>
-    );
-}
-
 export default function Blog({ blog }: { blog: BlogPost }) {
-    console.log(blog);
-
-    // Format date if available
-    const formattedDate = blog.published_at
-        ? new Date(blog.published_at).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-          })
-        : null;
-
+    //console.log(blog);
+    const formattedDate = useFormattedDate(blog.updated_at);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={blog.title} />
@@ -87,11 +67,8 @@ export default function Blog({ blog }: { blog: BlogPost }) {
                         </div>
 
                         <div className="flex items-center space-x-4">
-                            <ReadingTime content={blog.content} />
-                            <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900">
-                                <Share2 className="mr-1 h-4 w-4" />
-                                Share
-                            </Button>
+                            <ReadingTimeDisplay content={blog.content} />
+                            <ShareButton title={blog.title} url={window.location.href} />
                         </div>
                     </div>
                 </header>
@@ -136,13 +113,6 @@ export default function Blog({ blog }: { blog: BlogPost }) {
                 </div>
 
                 {/* Comments Section - Optional */}
-                <div className="mt-10 border-t border-gray-200 pt-6">
-                    <h3 className="mb-6 text-xl font-bold">Comments</h3>
-                    <div className="rounded-lg bg-gray-50 p-6 text-center">
-                        <p className="mb-4 text-gray-600">Join the conversation! Sign in to leave a comment.</p>
-                        <Button>Sign In to Comment</Button>
-                    </div>
-                </div>
             </div>
         </AppLayout>
     );

@@ -2,15 +2,15 @@
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WelcomeController;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('blogs', BlogController::class);
