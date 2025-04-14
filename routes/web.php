@@ -34,6 +34,11 @@ Route::middleware(['auth', 'verified'])->get('blogs/update/{id}', function ($id)
     ]);
 })->name('update');
 
+
+Route::get('/blogs/update/{id}', [BlogController::class, 'edit'])->name('blogs.edit');
+
+
+
 Route::get('/test', function () {
     return Inertia::render('test');
 })->name('test');

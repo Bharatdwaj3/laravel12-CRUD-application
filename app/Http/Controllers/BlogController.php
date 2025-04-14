@@ -46,7 +46,7 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -79,14 +79,32 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        $blog = Blog::findOrFail($id);
 
-        return Inertia::render('blogs/show', [
-            'blogPost' => [
-                ...$blog->toArray(),
-                'image_url' => $blog->image ? Storage::url($blog->image) : null,
-            ]
-        ]);
+        $SelectBlog = Blog::findOrFail($id);
+        //dd($blog);
+        $blog = [
+            'title' => $SelectBlog->title,
+            'excerpt' => $SelectBlog->excerpt,
+            'content' => $SelectBlog->content,
+            'category' => $SelectBlog->category,
+            'author' => $SelectBlog->author,
+            'status' => $SelectBlog->status,
+            'image_url' => $SelectBlog->image ? Storage::url($SelectBlog->image) : null,
+            'created_at' => $SelectBlog->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $SelectBlog->updated_at->format('Y-m-d H:i:s'),
+        ];
+        return Inertia::render('blogs/show', compact('blog'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        //dd('check', $id);
+        $blog = Blog::find($id);
+        //dd($blog);
+        return Inertia::render('blogs/update', compact('blog'));
     }
 
     /**

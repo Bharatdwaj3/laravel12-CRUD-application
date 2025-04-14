@@ -31,8 +31,8 @@ export default function Blogs({ blogPosts }: { blogPosts: BlogPost[] }) {
                     </Link>
                 </div>
                 <div className="m-4 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-                    {blogPosts.map((post, index) => (
-                        <Link href="/blogs/{index}" key={index}>
+                    {blogPosts.map((post, id) => (
+                        <Link href={`/blogs/${post.id}`} key={id}>
                             <Card className="transition-all duration-300 hover:translate-y-1 hover:shadow-2xl">
                                 <div className="relative h-48 w-full overflow-hidden rounded-xl border transition-all duration-300 hover:translate-y-1 hover:shadow-2xl">
                                     <img

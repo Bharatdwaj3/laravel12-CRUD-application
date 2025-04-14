@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
+import { Link } from '@inertiajs/react';
 
 interface TableItem {
   id: string;
@@ -48,13 +49,14 @@ export default function Table({ items, onEdit, onDelete }: TableProps) {
               </td>
               <td className="whitespace-nowrap px-6 py-4 text-sm">
                 <div className="flex space-x-2">
-                  <button
-                    onClick={() => onEdit(item.id)}
-                    className="rounded p-1 text-blue-600 hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-900"
-                    aria-label="Edit"
-                  >
-                    <Pencil size={16} />
-                  </button>
+
+                <Link href={route('blogs.edit', { id: item.id })}
+                className="rounded p-1 text-blue-600 hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-900"
+                aria-label="Edit">
+                <Pencil size={16} />
+                  </Link>
+
+                 
                   <button
                     onClick={() => onDelete(item.id)}
                     className="rounded p-1 text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900"

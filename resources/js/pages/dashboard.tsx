@@ -19,7 +19,7 @@ interface Data {
 }
 
 export default function Dashboard({ data }: { data: Record<string, Data> | Data[] }) {
-    console.log(data, typeof data);
+    //console.log(data, typeof data);
     const items = Array.isArray(data) ? data : Object.values(data || {});
 
     const handleDelete = (id: string) => {
@@ -38,6 +38,7 @@ export default function Dashboard({ data }: { data: Record<string, Data> | Data[
     const handleUpdate = (id: string) => {
         // Handle update action here
         console.log('Update item with ID:', id);
+        //riderct to the route blogs/update page
     };
 
     return (
